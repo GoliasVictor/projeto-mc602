@@ -18,7 +18,7 @@
 -- the top level entity of the current Quartus project .The user can use this   
 -- testbench to simulate his design using a third-party simulation tool .       
 -- *****************************************************************************
--- Generated on "11/13/2024 00:48:49"
+-- Generated on "11/13/2024 10:12:51"
                                                              
 -- Vhdl Test Bench(with test vectors) for design  :          projeto
 -- 
@@ -33,38 +33,35 @@ END projeto_vhd_vec_tst;
 ARCHITECTURE projeto_arch OF projeto_vhd_vec_tst IS
 -- constants                                                 
 -- signals                                                   
-SIGNAL check_input : STD_LOGIC;
 SIGNAL clock : STD_LOGIC;
-SIGNAL code_in : STD_LOGIC_VECTOR(0 TO 3);
+SIGNAL code_in : STD_LOGIC_VECTOR(0 TO 7);
 SIGNAL is_programming : STD_LOGIC;
-SIGNAL new_code : STD_LOGIC_VECTOR(0 TO 3);
-SIGNAL Resetn : STD_LOGIC;
+SIGNAL new_code : STD_LOGIC_VECTOR(0 TO 7);
+SIGNAL resetn : STD_LOGIC;
 SIGNAL s : STD_LOGIC;
-SIGNAL state : STD_LOGIC_VECTOR(0 TO 1);
+SIGNAL update : STD_LOGIC;
 COMPONENT projeto
 	PORT (
-	check_input : IN STD_LOGIC;
 	clock : IN STD_LOGIC;
-	code_in : IN STD_LOGIC_VECTOR(0 TO 3);
+	code_in : IN STD_LOGIC_VECTOR(0 TO 7);
 	is_programming : IN STD_LOGIC;
-	new_code : IN STD_LOGIC_VECTOR(0 TO 3);
-	Resetn : IN STD_LOGIC;
-	s : OUT STD_LOGIC;
-	state : BUFFER STD_LOGIC_VECTOR(0 TO 1)
+	new_code : IN STD_LOGIC_VECTOR(0 TO 7);
+	resetn : IN STD_LOGIC;
+	s : BUFFER STD_LOGIC;
+	update : IN STD_LOGIC
 	);
 END COMPONENT;
 BEGIN
 	i1 : projeto
 	PORT MAP (
 -- list connections between master ports and signals
-	check_input => check_input,
 	clock => clock,
 	code_in => code_in,
 	is_programming => is_programming,
 	new_code => new_code,
-	Resetn => Resetn,
+	resetn => resetn,
 	s => s,
-	state => state
+	update => update
 	);
 
 -- clock
@@ -73,44 +70,30 @@ BEGIN
 	clock <= '0';
 WAIT;
 END PROCESS t_prcs_clock;
--- new_code[3]
-t_prcs_new_code_3: PROCESS
+-- code_in[7]
+t_prcs_code_in_7: PROCESS
 BEGIN
-	new_code(3) <= '0';
+	code_in(7) <= '0';
 WAIT;
-END PROCESS t_prcs_new_code_3;
--- new_code[2]
-t_prcs_new_code_2: PROCESS
+END PROCESS t_prcs_code_in_7;
+-- code_in[6]
+t_prcs_code_in_6: PROCESS
 BEGIN
-	new_code(2) <= '0';
+	code_in(6) <= '0';
 WAIT;
-END PROCESS t_prcs_new_code_2;
--- new_code[1]
-t_prcs_new_code_1: PROCESS
+END PROCESS t_prcs_code_in_6;
+-- code_in[5]
+t_prcs_code_in_5: PROCESS
 BEGIN
-	new_code(1) <= '0';
+	code_in(5) <= '0';
 WAIT;
-END PROCESS t_prcs_new_code_1;
--- new_code[0]
-t_prcs_new_code_0: PROCESS
+END PROCESS t_prcs_code_in_5;
+-- code_in[4]
+t_prcs_code_in_4: PROCESS
 BEGIN
-	new_code(0) <= '0';
+	code_in(4) <= '0';
 WAIT;
-END PROCESS t_prcs_new_code_0;
-
--- Resetn
-t_prcs_Resetn: PROCESS
-BEGIN
-	Resetn <= '0';
-WAIT;
-END PROCESS t_prcs_Resetn;
-
--- check_input
-t_prcs_check_input: PROCESS
-BEGIN
-	check_input <= '0';
-WAIT;
-END PROCESS t_prcs_check_input;
+END PROCESS t_prcs_code_in_4;
 -- code_in[3]
 t_prcs_code_in_3: PROCESS
 BEGIN
@@ -142,4 +125,66 @@ BEGIN
 	is_programming <= '0';
 WAIT;
 END PROCESS t_prcs_is_programming;
+-- new_code[7]
+t_prcs_new_code_7: PROCESS
+BEGIN
+	new_code(7) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_7;
+-- new_code[6]
+t_prcs_new_code_6: PROCESS
+BEGIN
+	new_code(6) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_6;
+-- new_code[5]
+t_prcs_new_code_5: PROCESS
+BEGIN
+	new_code(5) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_5;
+-- new_code[4]
+t_prcs_new_code_4: PROCESS
+BEGIN
+	new_code(4) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_4;
+-- new_code[3]
+t_prcs_new_code_3: PROCESS
+BEGIN
+	new_code(3) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_3;
+-- new_code[2]
+t_prcs_new_code_2: PROCESS
+BEGIN
+	new_code(2) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_2;
+-- new_code[1]
+t_prcs_new_code_1: PROCESS
+BEGIN
+	new_code(1) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_1;
+-- new_code[0]
+t_prcs_new_code_0: PROCESS
+BEGIN
+	new_code(0) <= '0';
+WAIT;
+END PROCESS t_prcs_new_code_0;
+
+-- resetn
+t_prcs_resetn: PROCESS
+BEGIN
+	resetn <= '0';
+WAIT;
+END PROCESS t_prcs_resetn;
+
+-- update
+t_prcs_update: PROCESS
+BEGIN
+	update <= '0';
+WAIT;
+END PROCESS t_prcs_update;
 END projeto_arch;
