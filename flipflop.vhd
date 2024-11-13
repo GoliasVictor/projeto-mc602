@@ -10,10 +10,12 @@ END flipflop;
 ARCHITECTURE Behavior OF flipflop IS
 signal s : std_logic;
 signal r : std_logic;
+signal dd : std_logic;
 
 BEGIN
-	s <= d nand clock;
-	r <= (not d) nand clock;
+	dd <= resetn  and d;
+	s <= dd nand clock;
+	r <= (not dd) nand clock;
 	q <= s nand nQ;
 	nQ <= r nand Q;
 END Behavior;

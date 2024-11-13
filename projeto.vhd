@@ -9,10 +9,10 @@ entity projeto is
 port(	
 	clock: in std_logic;
 	resetn: in std_logic;   
-	check_input: in std_logic;   
+	update: in std_logic;   
 	is_programming : in std_logic;
-	new_code: IN STD_LOGIC_VECTOR(0 to 3); 
-	code_in: IN STD_LOGIC_VECTOR(0 to 3); 
+	new_code: IN STD_LOGIC_VECTOR(0 to 7); 
+	code_in: IN STD_LOGIC_VECTOR(0 to 7); 
 	s:	out  std_logic
 );
 end;
@@ -21,7 +21,7 @@ end;
 
 architecture behv_projeto of projeto is
 signal is_equal : std_logic;
-signal code : STD_LOGIC_VECTOR(0 to 3);
+signal code : STD_LOGIC_VECTOR(0 to 7);
 begin				
 
 	code_memory : work.code_memory 
@@ -34,7 +34,7 @@ begin
 	);   
 	equality_checker : work.equality_checker port map (code_in, code, is_equal);
 	state_machine : work.state_machine port map (
-		clock => clock,
+		clock => update,
 		resetn => resetn,
 		is_equal => is_equal, 
 		is_programming => is_programming, 
