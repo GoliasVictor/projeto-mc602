@@ -2,20 +2,18 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY flipflop IS
 	PORT (
-		Clock, resetn, d : IN STD_LOGIC;
-		Q : buffer STD_LOGIC;
-		nQ : buffer STD_LOGIC);
-
+		clock, Resetn, load, D : IN STD_LOGIC;
+		Q : BUFFER STD_LOGIC
+	);
 END flipflop;
 ARCHITECTURE Behavior OF flipflop IS
-signal s : std_logic;
-signal r : std_logic;
-signal dd : std_logic;
-
 BEGIN
-	dd <= resetn  and d;
-	s <= dd nand clock;
-	r <= (not dd) nand clock;
-	q <= s nand nQ;
-	nQ <= r nand Q;
+	PROCESS (Resetn, Clock)
+	BEGIN
+		IF Resetn = '0' THEN
+			Q <= '0';
+		ELSIF Clock'EVENT AND Clock = '1' AND load = '1' THEN
+			Q <= D;
+		END IF;
+	END PROCESS;
 END Behavior;

@@ -1,0 +1,447 @@
+|toplevel
+clock_50 => projeto:projeto.clock
+key[0] => projeto:projeto.update
+key[1] => projeto:projeto.resetn
+key[2] => ~NO_FANOUT~
+key[3] => ~NO_FANOUT~
+sw[0] => ~NO_FANOUT~
+sw[1] => projeto:projeto.is_programming
+sw[2] => projeto:projeto.new_code[7]
+sw[2] => projeto:projeto.code_in[7]
+sw[2] => decoder7segment:display2.input[0]
+sw[3] => projeto:projeto.new_code[6]
+sw[3] => projeto:projeto.code_in[6]
+sw[3] => decoder7segment:display2.input[1]
+sw[4] => projeto:projeto.new_code[5]
+sw[4] => projeto:projeto.code_in[5]
+sw[4] => decoder7segment:display2.input[2]
+sw[5] => projeto:projeto.new_code[4]
+sw[5] => projeto:projeto.code_in[4]
+sw[5] => decoder7segment:display2.input[3]
+sw[6] => projeto:projeto.new_code[3]
+sw[6] => projeto:projeto.code_in[3]
+sw[6] => decoder7segment:display1.input[0]
+sw[7] => projeto:projeto.new_code[2]
+sw[7] => projeto:projeto.code_in[2]
+sw[7] => decoder7segment:display1.input[1]
+sw[8] => projeto:projeto.new_code[1]
+sw[8] => projeto:projeto.code_in[1]
+sw[8] => decoder7segment:display1.input[2]
+sw[9] => projeto:projeto.new_code[0]
+sw[9] => projeto:projeto.code_in[0]
+sw[9] => decoder7segment:display1.input[3]
+hex5[0] << decoder7segment:display1.hex[0]
+hex5[1] << decoder7segment:display1.hex[1]
+hex5[2] << decoder7segment:display1.hex[2]
+hex5[3] << decoder7segment:display1.hex[3]
+hex5[4] << decoder7segment:display1.hex[4]
+hex5[5] << decoder7segment:display1.hex[5]
+hex5[6] << decoder7segment:display1.hex[6]
+hex4[0] << decoder7segment:display2.hex[0]
+hex4[1] << decoder7segment:display2.hex[1]
+hex4[2] << decoder7segment:display2.hex[2]
+hex4[3] << decoder7segment:display2.hex[3]
+hex4[4] << decoder7segment:display2.hex[4]
+hex4[5] << decoder7segment:display2.hex[5]
+hex4[6] << decoder7segment:display2.hex[6]
+hex1[0] << decoder7segment:display3.hex[0]
+hex1[1] << decoder7segment:display3.hex[1]
+hex1[2] << decoder7segment:display3.hex[2]
+hex1[3] << decoder7segment:display3.hex[3]
+hex1[4] << decoder7segment:display3.hex[4]
+hex1[5] << decoder7segment:display3.hex[5]
+hex1[6] << decoder7segment:display3.hex[6]
+hex0[0] << decoder7segment:display4.hex[0]
+hex0[1] << decoder7segment:display4.hex[1]
+hex0[2] << decoder7segment:display4.hex[2]
+hex0[3] << decoder7segment:display4.hex[3]
+hex0[4] << decoder7segment:display4.hex[4]
+hex0[5] << decoder7segment:display4.hex[5]
+hex0[6] << decoder7segment:display4.hex[6]
+ledr[0] << projeto:projeto.s
+ledr[1] << projeto:projeto.s
+ledr[2] << <GND>
+ledr[3] << <GND>
+ledr[4] << <GND>
+ledr[5] << <GND>
+ledr[6] << <GND>
+ledr[7] << <GND>
+ledr[8] << projeto:projeto.state_out[0]
+ledr[9] << projeto:projeto.state_out[1]
+
+
+|toplevel|projeto:projeto
+clock => flipflop:flipflop_update.clock
+clock => code_memory:code_memory.clock
+clock => state_machine:state_machine.clock
+resetn => flipflop:flipflop_update.Resetn
+resetn => code_memory:code_memory.resetn
+resetn => state_machine:state_machine.resetn
+update => comb.IN1
+update => flipflop:flipflop_update.D
+is_programming => code_memory:code_memory.load
+is_programming => state_machine:state_machine.is_programming
+new_code[7] => code_memory:code_memory.new_code[7]
+new_code[6] => code_memory:code_memory.new_code[6]
+new_code[5] => code_memory:code_memory.new_code[5]
+new_code[4] => code_memory:code_memory.new_code[4]
+new_code[3] => code_memory:code_memory.new_code[3]
+new_code[2] => code_memory:code_memory.new_code[2]
+new_code[1] => code_memory:code_memory.new_code[1]
+new_code[0] => code_memory:code_memory.new_code[0]
+code_in[7] => equality_checker:equality_checker.A[7]
+code_in[6] => equality_checker:equality_checker.A[6]
+code_in[5] => equality_checker:equality_checker.A[5]
+code_in[4] => equality_checker:equality_checker.A[4]
+code_in[3] => equality_checker:equality_checker.A[3]
+code_in[2] => equality_checker:equality_checker.A[2]
+code_in[1] => equality_checker:equality_checker.A[1]
+code_in[0] => equality_checker:equality_checker.A[0]
+saved_code[7] <= code_memory:code_memory.code[7]
+saved_code[6] <= code_memory:code_memory.code[6]
+saved_code[5] <= code_memory:code_memory.code[5]
+saved_code[4] <= code_memory:code_memory.code[4]
+saved_code[3] <= code_memory:code_memory.code[3]
+saved_code[2] <= code_memory:code_memory.code[2]
+saved_code[1] <= code_memory:code_memory.code[1]
+saved_code[0] <= code_memory:code_memory.code[0]
+s <= state_machine:state_machine.O
+state_out[1] <= state_machine:state_machine.state_out[1]
+state_out[0] <= state_machine:state_machine.state_out[0]
+
+
+|toplevel|projeto:projeto|flipflop:flipflop_update
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory
+clock => flipflop:flipflop0.clock
+clock => flipflop:flipflop1.clock
+clock => flipflop:flipflop2.clock
+clock => flipflop:flipflop3.clock
+clock => flipflop:flipflop4.clock
+clock => flipflop:flipflop5.clock
+clock => flipflop:flipflop6.clock
+clock => flipflop:flipflop7.clock
+resetn => flipflop:flipflop0.Resetn
+resetn => flipflop:flipflop1.Resetn
+resetn => flipflop:flipflop2.Resetn
+resetn => flipflop:flipflop3.Resetn
+resetn => flipflop:flipflop4.Resetn
+resetn => flipflop:flipflop5.Resetn
+resetn => flipflop:flipflop6.Resetn
+resetn => flipflop:flipflop7.Resetn
+load => flipflop:flipflop0.load
+load => flipflop:flipflop1.load
+load => flipflop:flipflop2.load
+load => flipflop:flipflop3.load
+load => flipflop:flipflop4.load
+load => flipflop:flipflop5.load
+load => flipflop:flipflop6.load
+load => flipflop:flipflop7.load
+new_code[7] => flipflop:flipflop7.D
+new_code[6] => flipflop:flipflop6.D
+new_code[5] => flipflop:flipflop5.D
+new_code[4] => flipflop:flipflop4.D
+new_code[3] => flipflop:flipflop3.D
+new_code[2] => flipflop:flipflop2.D
+new_code[1] => flipflop:flipflop1.D
+new_code[0] => flipflop:flipflop0.D
+code[7] <= flipflop:flipflop7.Q
+code[6] <= flipflop:flipflop6.Q
+code[5] <= flipflop:flipflop5.Q
+code[4] <= flipflop:flipflop4.Q
+code[3] <= flipflop:flipflop3.Q
+code[2] <= flipflop:flipflop2.Q
+code[1] <= flipflop:flipflop1.Q
+code[0] <= flipflop:flipflop0.Q
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop0
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop1
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop2
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop3
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop4
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop5
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop6
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|code_memory:code_memory|flipflop:flipflop7
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|equality_checker:equality_checker
+A[7] => O.IN0
+A[6] => O.IN0
+A[5] => O.IN0
+A[4] => O.IN0
+A[3] => O.IN0
+A[2] => O.IN0
+A[1] => O.IN0
+A[0] => O.IN0
+B[7] => O.IN1
+B[6] => O.IN1
+B[5] => O.IN1
+B[4] => O.IN1
+B[3] => O.IN1
+B[2] => O.IN1
+B[1] => O.IN1
+B[0] => O.IN1
+O <= O.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|state_machine:state_machine
+clock => flipflop:fliflopy1.clock
+clock => flipflop:fliflopy2.clock
+resetn => flipflop:fliflopy1.Resetn
+resetn => flipflop:fliflopy2.Resetn
+is_equal => state_machine_newstate:state_machine_newstate.is_equal
+is_programming => state_machine_newstate:state_machine_newstate.is_programming
+update => state_machine_newstate:state_machine_newstate.update
+O <= O.DB_MAX_OUTPUT_PORT_TYPE
+state_out[1] <= flipflop:fliflopy2.Q
+state_out[0] <= flipflop:fliflopy1.Q
+
+
+|toplevel|projeto:projeto|state_machine:state_machine|state_machine_newstate:state_machine_newstate
+is_equal => new_state.IN1
+is_equal => new_state.IN1
+is_programming => new_state.IN0
+is_programming => new_state.IN0
+is_programming => new_state.IN0
+update => new_state.IN1
+update => new_state.IN1
+update => new_state.IN1
+state[1] => new_state.IN0
+state[1] => new_state.IN1
+state[1] => new_state.IN1
+state[0] => new_state.IN1
+state[0] => new_state.IN1
+state[0] => new_state.IN1
+new_state[1] <= new_state.DB_MAX_OUTPUT_PORT_TYPE
+new_state[0] <= new_state.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|state_machine:state_machine|flipflop:fliflopy1
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|projeto:projeto|state_machine:state_machine|flipflop:fliflopy2
+clock => Q~reg0.CLK
+Resetn => Q~reg0.ACLR
+load => Q~reg0.ENA
+D => Q~reg0.DATAIN
+Q <= Q~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|decoder7segment:display1
+input[0] => Mux0.IN19
+input[0] => Mux1.IN19
+input[0] => Mux2.IN19
+input[0] => Mux3.IN19
+input[0] => Mux4.IN19
+input[0] => Mux5.IN19
+input[0] => Mux6.IN19
+input[1] => Mux0.IN18
+input[1] => Mux1.IN18
+input[1] => Mux2.IN18
+input[1] => Mux3.IN18
+input[1] => Mux4.IN18
+input[1] => Mux5.IN18
+input[1] => Mux6.IN18
+input[2] => Mux0.IN17
+input[2] => Mux1.IN17
+input[2] => Mux2.IN17
+input[2] => Mux3.IN17
+input[2] => Mux4.IN17
+input[2] => Mux5.IN17
+input[2] => Mux6.IN17
+input[3] => Mux0.IN16
+input[3] => Mux1.IN16
+input[3] => Mux2.IN16
+input[3] => Mux3.IN16
+input[3] => Mux4.IN16
+input[3] => Mux5.IN16
+input[3] => Mux6.IN16
+hex[0] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+hex[1] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+hex[2] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+hex[3] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+hex[4] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+hex[5] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+hex[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|decoder7segment:display2
+input[0] => Mux0.IN19
+input[0] => Mux1.IN19
+input[0] => Mux2.IN19
+input[0] => Mux3.IN19
+input[0] => Mux4.IN19
+input[0] => Mux5.IN19
+input[0] => Mux6.IN19
+input[1] => Mux0.IN18
+input[1] => Mux1.IN18
+input[1] => Mux2.IN18
+input[1] => Mux3.IN18
+input[1] => Mux4.IN18
+input[1] => Mux5.IN18
+input[1] => Mux6.IN18
+input[2] => Mux0.IN17
+input[2] => Mux1.IN17
+input[2] => Mux2.IN17
+input[2] => Mux3.IN17
+input[2] => Mux4.IN17
+input[2] => Mux5.IN17
+input[2] => Mux6.IN17
+input[3] => Mux0.IN16
+input[3] => Mux1.IN16
+input[3] => Mux2.IN16
+input[3] => Mux3.IN16
+input[3] => Mux4.IN16
+input[3] => Mux5.IN16
+input[3] => Mux6.IN16
+hex[0] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+hex[1] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+hex[2] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+hex[3] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+hex[4] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+hex[5] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+hex[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|decoder7segment:display3
+input[0] => Mux0.IN19
+input[0] => Mux1.IN19
+input[0] => Mux2.IN19
+input[0] => Mux3.IN19
+input[0] => Mux4.IN19
+input[0] => Mux5.IN19
+input[0] => Mux6.IN19
+input[1] => Mux0.IN18
+input[1] => Mux1.IN18
+input[1] => Mux2.IN18
+input[1] => Mux3.IN18
+input[1] => Mux4.IN18
+input[1] => Mux5.IN18
+input[1] => Mux6.IN18
+input[2] => Mux0.IN17
+input[2] => Mux1.IN17
+input[2] => Mux2.IN17
+input[2] => Mux3.IN17
+input[2] => Mux4.IN17
+input[2] => Mux5.IN17
+input[2] => Mux6.IN17
+input[3] => Mux0.IN16
+input[3] => Mux1.IN16
+input[3] => Mux2.IN16
+input[3] => Mux3.IN16
+input[3] => Mux4.IN16
+input[3] => Mux5.IN16
+input[3] => Mux6.IN16
+hex[0] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+hex[1] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+hex[2] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+hex[3] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+hex[4] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+hex[5] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+hex[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|toplevel|decoder7segment:display4
+input[0] => Mux0.IN19
+input[0] => Mux1.IN19
+input[0] => Mux2.IN19
+input[0] => Mux3.IN19
+input[0] => Mux4.IN19
+input[0] => Mux5.IN19
+input[0] => Mux6.IN19
+input[1] => Mux0.IN18
+input[1] => Mux1.IN18
+input[1] => Mux2.IN18
+input[1] => Mux3.IN18
+input[1] => Mux4.IN18
+input[1] => Mux5.IN18
+input[1] => Mux6.IN18
+input[2] => Mux0.IN17
+input[2] => Mux1.IN17
+input[2] => Mux2.IN17
+input[2] => Mux3.IN17
+input[2] => Mux4.IN17
+input[2] => Mux5.IN17
+input[2] => Mux6.IN17
+input[3] => Mux0.IN16
+input[3] => Mux1.IN16
+input[3] => Mux2.IN16
+input[3] => Mux3.IN16
+input[3] => Mux4.IN16
+input[3] => Mux5.IN16
+input[3] => Mux6.IN16
+hex[0] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+hex[1] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+hex[2] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+hex[3] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+hex[4] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+hex[5] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+hex[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+

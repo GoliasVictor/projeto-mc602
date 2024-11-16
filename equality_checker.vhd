@@ -1,10 +1,10 @@
 LIBRARY ieee;
-USE ieee.std_logic_1164.ALL; 
+USE ieee.std_logic_1164.ALL;
 ENTITY equality_checker IS
-	PORT (  
-		A: IN STD_LOGIC_VECTOR(0 to 7);
-		B: IN STD_LOGIC_VECTOR(0 to 7);
-		O: OUT STD_LOGIC
+	PORT (
+		A : IN STD_LOGIC_VECTOR(0 TO 7);
+		B : IN STD_LOGIC_VECTOR(0 TO 7);
+		O : OUT STD_LOGIC
 	);
 END;
 
@@ -12,13 +12,13 @@ END;
 
 ARCHITECTURE behv_equality_checker OF equality_checker IS
 BEGIN
-	O <= (A(0) xnor B(0)) 
-	and (A(1) xnor B(1)) 
-	and (A(2) xnor B(2)) 
-	and (A(3) xnor B(3))
-	and (A(4) xnor B(4)) 
-	and (A(5) xnor B(5)) 
-	and (A(6) xnor B(6)) 
-	and (A(7) xnor B(7))	
-	;
+	O <= (A(0) XNOR B(0))
+		AND (A(1) XNOR B(1))
+		AND (A(2) XNOR B(2))
+		AND (A(3) XNOR B(3))
+		AND (A(4) XNOR B(4))
+		AND (A(5) XNOR B(5))
+		AND (A(6) XNOR B(6))
+		AND (A(7) XNOR B(7))
+		;
 END;

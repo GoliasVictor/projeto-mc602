@@ -1,0 +1,18 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ENTITY state_machine_newstate IS
+	PORT (
+      is_equal , is_programming : IN STD_LOGIC;
+		state0, state1: in std_logic;
+		new_state0, new_state1 : OUT STD_LOGIC
+	);
+END;
+
+--------------------------------------------------------
+
+ ARCHITECTURE behv_state_machine_newstate OF state_machine_newstate IS
+
+ BEGIN
+	new_state0 <= (not is_programming and not is_equal and not state1) or (state0 and state1);
+	new_state1 <= (not is_programming and is_equal) or (state0 and state1) or (state1 and not is_programming) or (state0 and not is_programming) ;
+ END;

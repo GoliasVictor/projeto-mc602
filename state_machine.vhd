@@ -2,74 +2,46 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 ENTITY state_machine IS
 	PORT (
-		clock : IN STD_LOGIC;		
+		clock : IN STD_LOGIC;
 		resetn : IN STD_LOGIC;
 		is_equal : IN STD_LOGIC;
 		is_programming : IN STD_LOGIC;
-		O : OUT STD_LOGIC
+		update : IN STD_LOGIC;
+		O : OUT STD_LOGIC;
+		state_out : OUT STD_LOGIC_VECTOR(0 TO 1)
 	);
 END;
+ARCHITECTURE behv_state_machine OF state_machine IS
+	SIGNAL state : STD_LOGIC_VECTOR(0 TO 1);
+	SIGNAL newstate : STD_LOGIC_VECTOR(0 TO 1);
+BEGIN
 
---------------------------------------------------------
+	o <= 'Z' WHEN (state(0) AND state(1)) = '1' ELSE
+		state(1);
+	state_machine_newstate : work.state_machine_newstate
+	PORT MAP(
+		is_equal,
+		is_programming,
+		update,
+		state,
+		newstate
+	);
 
- ARCHITECTURE behv_state_machine OF state_machine IS
- 	signal state0:  STD_LOGIC;
-	signal nstate0:  STD_LOGIC;
- 	signal state1:  STD_LOGIC;
-	signal nstate1:  STD_LOGIC;
- BEGIN
- 	o <= 'Z' when  (state0 and state1) = '1'  else state1;
- 	fliflopy1 : work.flipflop port map (
-		clock, 
-		resetn, 
-		(not is_programming and not is_equal and nstate1) or (state0 and state1),
-		state0,
-		nstate0
+	fliflopy1 : work.flipflop
+	PORT MAP(
+		clock,
+		resetn,
+		'1',
+		newstate(0),
+		state(0)
 	);
-	fliflopy2 : work.flipflop port map (
-		clock, 
-		resetn, 
-		(not is_programming and state1) or (not state0 and is_programming) or (state0 and state1),
-		state1,
-		nstate1
+	fliflopy2 : work.flipflop
+	PORT MAP(
+		clock,
+		resetn,
+		'1',
+		newstate(1),
+		state(1)
 	);
- END;
--- ARCHITECTURE behv_state_machine OF state_machine IS
--- 	TYPE mstate IS (start, witherror, opened, disabled);
--- 	SIGNAL state : mstate ;
--- 
--- BEGIN
--- 	o <= 'Z' WHEN state = disabled ELSE
--- 		'1' WHEN state = opened ELSE
--- 		'0';
--- 		
--- 	PROCESS (clock)
--- 	BEGIN
---  
--- 		IF (rising_edge(clock)) THEN
--- 			IF (not (state = disabled)) THEN
--- 				IF (is_programming = '1' and not (state = opened)) THEN
--- 					state <= start;
--- 				ELSE
--- 				case State is
--- 					when start => 
--- 						if(is_equal = '1') then
--- 							state <=  opened;
--- 						else
--- 							state <= witherror;
--- 						end if; 
--- 					
--- 					when witherror => 
--- 						if(is_equal = '1') then
--- 							state <=  opened;
--- 						else
--- 							state <= disabled;
--- 						end if;
--- 					when others => null;
--- 				end case;
--- 				END IF;
--- 
--- 			END IF;
--- 		END IF;
--- 	END PROCESS;
--- END;
+	state_out <= state;
+END;

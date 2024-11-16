@@ -1,45 +1,51 @@
 
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.std_logic_unsigned.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_arith.ALL;
+USE ieee.std_logic_unsigned.ALL;
 
-entity projeto is
-port(	
-	clock: in std_logic;
-	resetn: in std_logic;   
-	update: in std_logic;   
-	is_programming : in std_logic;
-	new_code: IN STD_LOGIC_VECTOR(0 to 7); 
-	code_in: IN STD_LOGIC_VECTOR(0 to 7); 
-	s:	out  std_logic
-);
-end;
+ENTITY projeto IS
+	PORT (
+		clock : IN STD_LOGIC;
+		resetn : IN STD_LOGIC;
+		update : IN STD_LOGIC;
+		is_programming : IN STD_LOGIC;
+		new_code : IN STD_LOGIC_VECTOR(0 TO 7);
+		code_in : IN STD_LOGIC_VECTOR(0 TO 7);
+		saved_code : OUT STD_LOGIC_VECTOR(0 TO 7);
+		s : OUT STD_LOGIC;
+		state_out : OUT STD_LOGIC_VECTOR(0 TO 1)
+	);
+END;
 
 --------------------------------------------------------
 
-architecture behv_projeto of projeto is
-signal is_equal : std_logic;
-signal code : STD_LOGIC_VECTOR(0 to 7);
-begin				
+ARCHITECTURE behv_projeto OF projeto IS
+	SIGNAL is_equal : STD_LOGIC;
+	SIGNAL code : STD_LOGIC_VECTOR(0 TO 7);
+	SIGNAL last_update : STD_LOGIC;
+BEGIN
 
-	code_memory : work.code_memory 
-		port map(
+	flipflop_update : work.flipflop PORT MAP (clock, resetn, '1', update, last_update);
+	code_memory : work.code_memory
+	PORT MAP(
 		clock => clock,
 		resetn => resetn,
 		load => is_programming,
 		new_code => new_code,
 		code => code
-	);   
-	equality_checker : work.equality_checker port map (code_in, code, is_equal);
-	state_machine : work.state_machine port map (
-		clock => update,
-		resetn => resetn,
-		is_equal => is_equal, 
-		is_programming => is_programming, 
-		o => s
 	);
-end;
-
-
+	equality_checker : work.equality_checker PORT MAP (code_in, code, is_equal);
+	state_machine : work.state_machine
+	PORT MAP(
+		clock => clock,
+		resetn => resetn,
+		is_equal => is_equal,
+		is_programming => is_programming,
+		update => update AND NOT last_update,
+		o => s,
+		state_out => state_out
+	);
+	saved_code <= code;
+END;

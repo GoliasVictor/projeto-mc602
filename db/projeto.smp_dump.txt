@@ -1,0 +1,7 @@
+
+State Machine - |toplevel|projeto:projeto|state_machine:state_machine|state
+Name state.disabled state.opened state.witherror state.start 
+state.start 0 0 0 0 
+state.witherror 0 0 1 1 
+state.opened 0 1 0 1 
+state.disabled 1 0 0 1 
